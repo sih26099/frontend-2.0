@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
+import { ToastProvider } from './components/common/Toast'
 import Dashboard from './pages/Dashboard'
 import Materials from './pages/Materials'
 import MaterialDetail from './pages/MaterialDetail'
@@ -18,26 +19,28 @@ import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/materials" element={<Materials />} />
-          <Route path="/materials/:id" element={<MaterialDetail />} />
-          <Route path="/search" element={<SemanticSearch />} />
-          <Route path="/matches" element={<Matches />} />
-          <Route path="/matches/:id" element={<MatchDetail />} />
-          <Route path="/compare" element={<Compare />} />
-          <Route path="/approvals" element={<Approvals />} />
-          <Route path="/approvals/:id" element={<ApprovalDetail />} />
-          <Route path="/nmc" element={<Nmc />} />
-          <Route path="/nmc/:code" element={<NmcDetail />} />
-          <Route path="/sync" element={<Sync />} />
-          <Route path="/audit" element={<Audit />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/materials" element={<Materials />} />
+            <Route path="/materials/:id" element={<MaterialDetail />} />
+            <Route path="/search" element={<SemanticSearch />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/matches/:id" element={<MatchDetail />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/approvals" element={<Approvals />} />
+            <Route path="/approvals/:id" element={<ApprovalDetail />} />
+            <Route path="/nmc" element={<Nmc />} />
+            <Route path="/nmc/:code" element={<NmcDetail />} />
+            <Route path="/sync" element={<Sync />} />
+            <Route path="/audit" element={<Audit />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   )
 }

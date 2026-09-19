@@ -15,10 +15,12 @@ import AttributeComparisonTable from '../components/matching/AttributeComparison
 import Breadcrumbs from '../components/common/Breadcrumbs'
 import { getAttributeComparisons } from '../lib/transformers'
 import { fmt, fmtDateTime } from '../lib/formatters'
+import { useToast } from '../components/common/Toast'
 
 export default function ApprovalDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const toast = useToast()
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [pendingDecision, setPendingDecision] = useState(null)
   const [performedBy, setPerformedBy] = useState('')
@@ -70,8 +72,14 @@ export default function ApprovalDetail() {
       .then(() => {
         setConfirmOpen(false)
         refetch()
+        const label =
+          pendingDecision === 'APPROVE' ? 'approved' : pendingDecision === 'REJECT' ? 'rejected' : 'marked for review'
+        toast.success(`Approval ${label}.`)
       })
-      .catch((err) => setSubmitError(err.message))
+      .catch((err) => {
+        setSubmitError(err.message)
+        toast.error(`Could not submit decision: ${err.message}`)
+      })
       .finally(() => setSubmitting(false))
   }
 
@@ -108,7 +116,7 @@ export default function ApprovalDetail() {
       {!isPending && (
         <div className="bg-surface-sunk border border-ink-200 rounded-md p-3 text-sm text-ink-700">
           This approval was resolved by <span className="font-medium">{fmt(approval.approved_by)}</span>
-          {approval.reason ? <> — “{approval.reason}”</> : null}. It cannot be changed.
+          {approval.reason ? <> — "{approval.reason}"</> : null}. It cannot be changed.
         </div>
       )}
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { UploadCloud, FileSpreadsheet, CheckCircle2, XCircle, X } from 'lucide-react'
 import { uploadMaterials } from '../services/api'
 import Button from '../components/common/Button'
+import { useToast } from '../components/common/Toast'
 
 const ACCEPTED_EXTENSIONS = ['.csv', '.xlsx', '.xls']
 
@@ -16,6 +17,7 @@ export default function Upload() {
   const [errorMessage, setErrorMessage] = useState(null)
   const inputRef = useRef(null)
   const navigate = useNavigate()
+  const toast = useToast()
 
   function validateAndSetFile(candidate) {
     if (!candidate) return
@@ -55,10 +57,12 @@ export default function Upload() {
       .then((res) => {
         setResult(res.data)
         setStatus('success')
+        toast.success(`Uploaded ${cpseName.trim()} — ${res.data.created} created, ${res.data.updated} updated.`)
       })
       .catch((err) => {
         setErrorMessage(err.message)
         setStatus('error')
+        toast.error(`Upload failed: ${err.message}`)
       })
   }
 
