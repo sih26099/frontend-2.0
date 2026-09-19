@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: theme('colors.surface.page');
+  color: theme('colors.ink.900');
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: #C9DCEF;
+}
+
+:focus-visible {
+  outline: 2px solid #1D4E89;
+  outline-offset: 2px;
+  transition: outline-offset 120ms ease;
+}
+
+/* Slim, unobtrusive scrollbars for a more polished feel */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: theme('colors.ink.200') transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: theme('colors.ink.200');
+  border-radius: 8px;
+  border: 2px solid transparent;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: theme('colors.ink.300');
+}
+
+/* Premium card primitive: gentle lift + shadow growth on hover.
+   Apply alongside bg-white border border-ink-200 rounded-md. */
+.card-surface {
+  transition: transform 220ms theme('transitionTimingFunction.premium'),
+    box-shadow 220ms theme('transitionTimingFunction.premium'),
+    border-color 220ms ease;
+  box-shadow: theme('boxShadow.card');
+}
+
+.card-surface:hover {
+  box-shadow: theme('boxShadow.card-hover');
+  border-color: theme('colors.ink.300');
+}
+
+.card-surface-static {
+  box-shadow: theme('boxShadow.card');
+}
+
+/* Stagger helper: use with animate-fade-in-up, set --stagger-i on each child */
+.stagger-item {
+  animation-delay: calc(var(--stagger-i, 0) * 60ms);
+}
+
+/* Compact data table primitives shared across pages */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.data-table thead th {
+  text-align: left;
+  font-weight: 600;
+  color: theme('colors.ink.500');
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  padding: 8px 12px;
+  border-bottom: 1px solid theme('colors.ink.200');
+  background: theme('colors.surface.sunk');
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+}
+
+.data-table tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid theme('colors.ink.100');
+  color: theme('colors.ink.900');
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background-color 120ms ease;
+}
+
+.data-table tbody tr:hover {
+  background: theme('colors.surface.sunk');
+}
+
+/* Skeleton loading placeholders */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    theme('colors.ink.100') 25%,
+    theme('colors.ink.200') 37%,
+    theme('colors.ink.100') 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+.mono {
+  font-family: theme('fontFamily.mono');
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
