@@ -113,8 +113,10 @@ export default function Upload() {
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && inputRef.current?.click()}
-              className={`flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed px-6 py-10 text-center cursor-pointer transition-colors ${
-                dragOver ? 'border-signal-info bg-signal-infoBg' : 'border-ink-200 hover:border-ink-300'
+              className={`relative flex flex-col items-center justify-center gap-2 rounded-md border-2 border-dashed px-6 py-10 text-center cursor-pointer transition-all duration-200 ${
+                dragOver
+                  ? 'border-signal-info bg-signal-infoBg scale-[1.01] shadow-card-hover ring-4 ring-signal-info/10'
+                  : 'border-ink-200 hover:border-ink-300 hover:bg-surface-sunk'
               }`}
             >
               <input
@@ -126,8 +128,8 @@ export default function Upload() {
               />
               {file ? (
                 <>
-                  <FileSpreadsheet size={22} className="text-signal-info" />
-                  <div className="text-sm text-ink-900 font-medium">{file.name}</div>
+                  <FileSpreadsheet size={22} className="text-signal-info animate-scale-in" />
+                  <div className="text-sm text-ink-900 font-medium animate-fade-in-up">{file.name}</div>
                   <div className="text-xs text-ink-500">{(file.size / 1024).toFixed(1)} KB</div>
                   <button
                     onClick={(e) => {
@@ -141,9 +143,12 @@ export default function Upload() {
                 </>
               ) : (
                 <>
-                  <UploadCloud size={22} className="text-ink-400" />
+                  <UploadCloud
+                    size={22}
+                    className={`transition-transform duration-200 ${dragOver ? 'text-signal-info scale-110 -translate-y-0.5' : 'text-ink-400'}`}
+                  />
                   <div className="text-sm text-ink-700">
-                    Drag and drop a CSV or Excel file, or click to browse
+                    {dragOver ? 'Drop it here' : 'Drag and drop a CSV or Excel file, or click to browse'}
                   </div>
                   <div className="text-xs text-ink-400">.csv, .xlsx, .xls</div>
                 </>
@@ -154,39 +159,41 @@ export default function Upload() {
 
         {status === 'uploading' && (
           <div>
-            <div className="h-1.5 bg-ink-100 rounded-sm overflow-hidden">
+            <div className="h-1.5 bg-ink-100 rounded-sm overflow-hidden relative">
               <div
-                className="h-full bg-signal-info rounded-sm transition-all"
+                className="h-full bg-signal-info rounded-sm transition-all duration-300 relative overflow-hidden"
                 style={{ width: `${progress}%` }}
-              />
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer-sweep" />
+              </div>
             </div>
             <div className="text-xs text-ink-500 mt-1.5">Uploading and processing… {progress}%</div>
           </div>
         )}
 
         {status === 'error' && errorMessage && (
-          <div className="flex items-start gap-2 bg-signal-badBg border border-signal-bad/30 rounded px-3 py-2.5 text-sm text-signal-bad">
+          <div className="flex items-start gap-2 bg-signal-badBg border border-signal-bad/30 rounded px-3 py-2.5 text-sm text-signal-bad animate-fade-in-up">
             <XCircle size={16} className="shrink-0 mt-0.5" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {status === 'success' && result && (
-          <div className="space-y-3">
+          <div className="space-y-3 animate-fade-in-up">
             <div className="flex items-center gap-2 text-signal-good">
-              <CheckCircle2 size={18} />
+              <CheckCircle2 size={18} className="animate-scale-in" />
               <span className="text-sm font-medium">Upload complete</span>
             </div>
             <ul className="text-sm text-ink-700 space-y-1.5">
-              <li className="flex items-center gap-2">
+              <li className="flex items-center gap-2 stagger-item animate-fade-in-up" style={{ '--stagger-i': 0 }}>
                 <CheckCircle2 size={14} className="text-signal-good shrink-0" />
                 File uploaded and parsed for {result.cpse}
               </li>
-              <li className="flex items-center gap-2">
+              <li className="flex items-center gap-2 stagger-item animate-fade-in-up" style={{ '--stagger-i': 1 }}>
                 <CheckCircle2 size={14} className="text-signal-good shrink-0" />
                 {result.created} new material{result.created === 1 ? '' : 's'} created, {result.updated} updated
               </li>
-              <li className="flex items-center gap-2">
+              <li className="flex items-center gap-2 stagger-item animate-fade-in-up" style={{ '--stagger-i': 2 }}>
                 <CheckCircle2 size={14} className="text-signal-good shrink-0" />
                 Checked against existing master — {result.duplicate_candidates_found} duplicate candidate
                 {result.duplicate_candidates_found === 1 ? '' : 's'} found

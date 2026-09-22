@@ -104,11 +104,20 @@ body {
 }
 
 .data-table tbody tr {
-  transition: background-color 120ms ease;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: rgba(15, 27, 45, 0.018);
 }
 
 .data-table tbody tr:hover {
   background: theme('colors.surface.sunk');
+}
+
+.data-table tbody tr.cursor-pointer:active {
+  background: theme('colors.ink.100');
+  transform: scale(0.998);
 }
 
 /* Skeleton loading placeholders */

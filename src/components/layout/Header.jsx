@@ -16,6 +16,17 @@ export default function Header({ onOpenMobileNav }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    function onKeyDown(e) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
   return (
     <header
       className={`sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-white/95 backdrop-blur-sm px-4 transition-shadow duration-250 ${
@@ -43,6 +54,9 @@ export default function Header({ onOpenMobileNav }) {
       >
         <Search size={14} />
         <span className="hidden sm:inline">Search materials…</span>
+        <kbd className="hidden sm:inline-flex items-center gap-0.5 rounded border border-ink-200 bg-white px-1.5 py-0.5 text-[0.65rem] font-mono text-ink-400 ml-1">
+          {navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl'}K
+        </kbd>
       </button>
 
       <button
